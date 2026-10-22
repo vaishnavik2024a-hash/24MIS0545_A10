@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Monitor - Initial</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f9; }
+        .alert { padding: 15px; background-color: #f44336; color: white; margin-bottom: 20px; display: none; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #2196F3; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Smart Water Distribution Dashboard (v1.0)</h2>
+    <div id="alert-box" class="alert">⚠️ CRITICAL ALERT: Abnormal Pressure or Low Reservoir Level Detected!</div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Zone Name</th>
+                <th>Reservoir Level (%)</th>
+                <th>Daily Supply (kL)</th>
+                <th>Pipeline Pressure (PSI)</th>
+                <th>Supply Timings</th>
+                <th>Network Status</th>
+            </tr>
+        </thead>
+        <tbody id="zone-table"></tbody>
+    </table>
+
+    <script>
+        const zones = [
+            { name: "Zone A - North", reservoir: 80, supply: 450, pressure: 45, time: "06:00 - 09:00", status: "Normal" },
+            { name: "Zone B - South", reservoir: 20, supply: 300, pressure: 42, time: "07:00 - 10:00", status: "Critical" }, // Alert: Res < 25%
+            { name: "Zone C - East", reservoir: 65, supply: 520, pressure: 65, time: "06:30 - 09:30", status: "Abnormal" }, // Alert: Pressure high
+            { name: "Zone D - West", reservoir: 50, supply: 410, pressure: 38, time: "08:00 - 11:00", status: "Normal" },
+            { name: "Zone E - Central", reservoir: 75, supply: 600, pressure: 15, time: "05:00 - 08:00", status: "Critical" } // Alert: Pressure low
+        ];
+
+        const tbody = document.getElementById('zone-table');
+        let triggerAlert = false;
+
+        zones.forEach(zone => {
+            if (zone.reservoir < 25 || zone.pressure < 20 || zone.pressure > 60) {
+                triggerAlert = true;
+            }
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${zone.name}</b></td>
+                    <td style="color: ${zone.reservoir < 25 ? 'red' : 'black'}">${zone.reservoir}%</td>
+                    <td>${zone.supply} kL</td>
+                    <td style="color: ${(zone.pressure < 20 || zone.pressure > 60) ? 'red' : 'black'}">${zone.pressure} PSI</td>
+                    <td>${zone.time}</td>
+                    <td>${zone.status}</td>
+                </tr>`;
+        });
+
+        if (triggerAlert) document.getElementById('alert-box').style.display = 'block';
+    </script>
+</body>
+</html>
