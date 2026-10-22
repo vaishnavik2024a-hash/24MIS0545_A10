@@ -6,7 +6,7 @@ pipeline {
     }
     
     environment {
-        DOCKER_HUB_USER  = 'your-dockerhub-username' // Change to your username
+        DOCKER_HUB_USER  = '24mis0545' // Change to your username
         IMAGE_NAME       = 'water-monitor'
         IMAGE_TAG        = "${BUILD_NUMBER}"
         DOCKER_CREDS_ID  = 'docker-hub-credentials' // Configured in Jenkins Credential Provider
